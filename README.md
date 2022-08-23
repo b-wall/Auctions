@@ -1,6 +1,6 @@
 # E-Commerce Project
 
-This was a web app made to simulate an auction-style website where users can bid, create listings of items, close auctions and add items to their watchlists. They can also browse items by category and add comments below listings. This project was made using Django on the backend, and HTML and CSS on the frontend. It was styled with Bootstrap and custom CSS.
+This was a web app made for Harvard's CS50W course to simulate an auction-style website where users can bid, create listings of items, close auctions and add items to their watchlists. They can also browse items by category and add comments below listings. This project was made using Django on the backend, and HTML and CSS on the frontend. It was styled with Bootstrap and custom CSS.
 
 ## Screenshots
 
