@@ -1,0 +1,16 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>New Listing</h2>
+    <div class="flex-container listing-container">
+    <!-- Display new listing form -->
+    <form method="post">
+        {% csrf_token %}
+        {{ listing_form }}
+        {{ bid_form }}
+        <div class="col text-center">
+            <input type="submit" value="Make your listing" class="btn btn-success mt-2">
+        </div>
+    </div>
+    </form>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% load humanize %}
+
+
+{% block body %}
+<h2>Active Listings</h2>
+<div class="d-flex flex-row-reverse">
+    <a class="btn btn-outline-primary btn-lg my-2" href="{% url 'categories' %}">Back to Categories</a>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <!-- Display listings dependent on category and whether active or not -->
+        {% for listing in listings %}
+            {% if listing.item_isactive %}
+            <div class="col mb-3">
+                <div class="card text-center" style="width: 18rem;">
+                    <!-- Display placeholder image if none provided -->
+                    {% if listing.item_image %}
+                    <img class="card-img-top" src="{{ listing.item_image }}" alt="{{ listing.item_name }}">
+                    {% else %}
+                    <img class="card-img-top" src="{% static 'auctions/image-unavailable.png' %}" alt="no image found">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ listing.item_name }}</h5>
+                        <p class="card-text">{{ listing.item_description|truncatechars:30 }}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        {% if listing.item_current_bid %}
+                        <li class="list-group-item">Current Bid: ${{ listing.item_current_bid|intcomma }}</li>
+                        {% else %}
+                        <li class="list-group-item">Current Bid: ${{ listing.item_initial_bid|intcomma }}</li>
+                        {% endif %}
+                    </ul>
+                    <!-- Show number of bids -->
+                    <div class="card-body">
+                        {{ listing.bid_count }} bid(s)
+                        <a href="{% url 'listing' item_id=listing.id %}" class="btn btn-primary">Make an offer</a>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% empty %}
+        <h2>No listings found.</h2>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

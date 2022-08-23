@@ -1,0 +1,91 @@
+body {
+  padding: 10px;
+  background: #fff;
+  color: #141414;
+}
+
+h2 {
+  text-align: center;
+}
+
+.card-img-top {
+  width: 100%;
+  height: 15vw;
+  object-fit: cover;
+  border-bottom: 0.5px solid #adb5bd;
+}
+
+.container {
+  justify-content: center;
+}
+
+.watchlist {
+  font-size: 1.4rem;
+}
+
+.listing-container {
+  width: 100%;
+  max-width: 32rem;
+  margin: auto;
+}
+
+.login-container {
+  width: 100%;
+  max-width: 32rem;
+  margin: auto;
+}
+
+.register-container {
+  width: 100%;
+  max-width: 32rem;
+  margin: auto;
+}
+
+.alert {
+  text-align: center !important;
+}
+
+.listing-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  max-height: 418.5px;
+}
+
+.watchlist-card img {
+  width: 100%;
+  height: 15vw;
+  border-bottom: 0.5px solid #adb5bd;
+  object-fit: cover;
+}
+
+.cat-col {
+  background-color: #56547d;
+  margin: 2rem;
+  border-radius: 10px;
+}
+
+.cat-col a {
+  color: #ffffff80;
+  padding: 2em;
+  margin: -2em;
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+.cat-col a:hover {
+  color: #fff;
+}
+
+.auctions-navbar {
+  border-radius: 10px;
+}
+
+.nav-item {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.winner {
+  font-size: 2rem;
+}

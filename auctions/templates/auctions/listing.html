@@ -1,0 +1,141 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block body %}
+    <!-- Iterate over auction listings, only displaying active listings -->
+    {% for object in auction_objects %}
+        {% if object.item_isactive == False %}
+                <div class="alert alert-secondary center-block text-center" role="alert">
+                    This listing is now <strong>closed</strong>.
+                </div>
+        {% endif %}
+        <!-- Display listing information -->
+    <h2>Listing for {{ object.item_name }}</h2>
+        <div class="container">
+            <div class="row">
+                <div class="col listing-image">
+                    {% if object.item_image %}
+                    <img src="{{ object.item_image }}" class="card-img" alt="{{ object.item_name }}">
+                    {% else %}
+                    <img src="{% static 'auctions/image-unavailable.png' %}" class="card-img" alt="no image found">
+                    {% endif %}
+                </div>
+                <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-3">
+                            <div class="col-auto mr-auto">
+                                <h5 class="card-title text-center">{{ object.item_name }}</h5>
+                            </div>
+                            <!-- Display watchlist add or remove button -->
+                            <div class="col-auto">
+                                {% if user.is_authenticated %}
+                                {% if user in object.watchlist.all %}
+                                <form method="post" action="{% url 'handlewatchlist' id %}">
+                                    {% csrf_token %}
+                                    <input type="submit" value="⊗ Watchlist" class="btn btn-outline-primary btn-sm">
+                                </form>
+                                {% else %}
+                                <form method="post" action="{% url 'handlewatchlist' id %}">
+                                    {% csrf_token %}
+                                    <input type="submit" value="⊕ Watchlist" class="btn btn-outline-primary btn-sm">
+                                </form>
+                                {% endif %}
+                                {% endif %}
+                            </div>
+                        </div>
+                        
+                        <!-- Calculate bid number to display -->
+                        <p class="card-subtitle mb-2 text-muted">{{ object.item_description }}</p>
+                        {% if object.item_isactive == True %}
+                        {{ object.bid_count }} Bid(s)
+                            {% if object.item_current_bid == 0.00 %}
+                                <h5 class="card-text">Current Bid: ${{ object.item_initial_bid|intcomma }}</h5>
+                                {% else %}
+                                <h5 class="card-text">Current Bid: ${{ object.item_current_bid|intcomma }}</h5>
+                                {% endif %}
+                        {% else %}
+                            <h5 class="card-text">Winning Bid: ${{ object.item_current_bid|intcomma }}</h5>
+                        {% endif %}
+
+                        <!-- Show winner of auction if applicable -->
+                        {% if request.user == object.item_buyer %}
+                            <div class="badge badge-pill badge-success" style="font-size: 1">You have won this auction! Congratulations!</div>
+                        {% endif %}
+                            <!-- Display bid form if user is logged in and listing is active -->
+                            {% if user.is_authenticated and object.item_isactive == True %}  
+
+                            <div class="row">
+                                <div class="col">
+                                    <form method="post">
+                                        {% csrf_token %}
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">$</span>
+                                                </div>
+                                                {{ bidform }}
+                                                <div class="input-group-append">
+                                                    <input type="submit" value="Place Bid" class="btn btn-primary">
+                                                </div>
+                                            </div>   
+                                        
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col d-flex align-items-center">
+                                    {% if user == object.item_poster and object.item_isactive == True %}
+                                    <form method="post" action="{% url 'closelisting' id %}">
+                                        {% csrf_token %}
+                                        <input type="submit" value="Close Auction" class="btn btn-danger">
+                                    </form>
+                                    {% endif %}
+                                </div>
+                                <div class="card-body d-flex flex-column justify-content-between">
+                                    <p class="card-text text-right"><small class="text-muted">Category: {{ object.item_category }}</small></p>
+                                    <p class="card-text text-right"><small class="text-muted">Listing by: {{ object.item_poster }}</small></p>
+                                    <p class="card-text text-right"><small class="text-muted">Posted {{ object.item_created|naturaltime }}</small></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                            {% elif not user.is_authenticated %}
+                            <p><a href="{% url 'login' %}">Login</a> to make a bid.</p>    
+                            {% endif %}
+                        </div>
+                    </div>
+            </div>
+            <div class="row w-100 mt-3" style="margin:0;">
+                <div class="col">
+                    {% if user.is_authenticated %}
+                    <div class="comment-container">
+                        <form method="post" action="{% url 'comment' id %}">
+                            {% csrf_token %}
+                            {{commentform}}
+                            <div class="row mt-2 mr-1 justify-content-end">
+                                <input type="submit" value="Post Comment" class="btn btn-primary">
+                            </div>
+                        </form>
+            
+                        <!-- User comments -->
+                        {% if comments %}
+                        {% for comment in comments %}
+                        <div class="list-group list-group-flush mt-2">
+                            <li class="list-group-item">
+                                <div class="d-flex w-100 justify-content-end pr-2">
+                                    <small>{{ comment.comment_timestamp|naturaltime }}</small>
+                                </div>
+                                <p class="mb-1">{{ comment.comment_content }}</p>
+                                <small>Posted by {{ comment.comment_name }}</small>
+                            </li>
+                        </div>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>            
+        {% endfor %}        
+    {% endblock %}

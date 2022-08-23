@@ -1,0 +1,17 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+<h2>Categories</h2>
+<div class="container-fluid">
+  <div class="row justify-content-center text-center cat-row">
+    <!-- Loop over categories and display -->
+    {% for category in categories %}
+      <div class="col-lg-3 p-4 cat-col">
+        <a class="stretched-link"  href="{% url 'category' category.id %}">{{ category }}</a>
+      </div>  
+    {% empty %}
+      No Categories found.
+    {% endfor %}
+  </div>  
+</div>
+{% endblock %}

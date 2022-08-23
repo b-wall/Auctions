@@ -1,0 +1,44 @@
+{% extends "auctions/layout.html" %}
+{% load static %}
+{% load humanize %}
+
+{% block body %}
+    <h2>Active Listings</h2>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Iterate over listings, displaying those which are active -->
+            {% for auction in objects %}
+                {% if auction.item_isactive %}
+                    <div class="col mb-3">
+                        <div class="card text-center" style="width: 20rem;">
+                            {% if auction.item_image %}
+                            <img class="card-img-top" src="{{ auction.item_image }}" alt="{{ auction.item_name }}">
+                            {% else %}
+                            <img class="card-img-top" src="{% static 'auctions/image-unavailable.png' %}" alt="no image found">
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title">{{ auction.item_name|truncatechars:25 }}</h5>
+                                <p class="card-text">{{ auction.item_description|truncatechars:25 }}</p>
+                            </div>
+                            <ul class="list-group list-group-flush">
+                                {% if auction.item_current_bid %}
+                                <li class="list-group-item">Current Bid: ${{ auction.item_current_bid|intcomma }}</li>
+                                {% else %}
+                                <li class="list-group-item">Current Bid: ${{ auction.item_initial_bid|intcomma }}</li>
+                                {% endif %}
+                            </ul>
+                            <div class="card-body">
+                                <button type="button" class="btn" style="background: #56547d; color: #fff;">
+                                    <span class="badge badge-light">{{ auction.bid_count }}</span> Bid(s)
+                                </button>
+                                <a href="{% url 'listing' item_id=auction.id %}" class="btn btn-primary">Make an offer</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% empty %}
+            <h2>No listings found.</h2>    
+            {% endfor %}            
+        </div>
+    </div>
+{% endblock %}
