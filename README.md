@@ -18,7 +18,7 @@ This was a web app made to simulate an auction-style website where users can bid
 
 ## Video
 
-[![Write-Off Video](https://img.youtube.com/vi/DZVi7u5jLh0/0.jpg)](https://www.youtube.com/watch?v=DZVi7u5jLh0)
+[![Auction Video](https://img.youtube.com/vi/DZVi7u5jLh0/0.jpg)](https://www.youtube.com/watch?v=DZVi7u5jLh0)
 
 ## Specification
 
